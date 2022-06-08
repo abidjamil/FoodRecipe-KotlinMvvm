@@ -1,0 +1,111 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id "kotlin-android-extensions"
+    id "androidx.navigation.safeargs.kotlin"
+    id "kotlin-kapt"
+}
+def getProperty(String filename, String propName) {
+    def propsFile = rootProject.file(filename)
+    if (propsFile.exists()) {
+        def props = new Properties()
+        props.load(new FileInputStream(propsFile))
+        if (props[propName] != null) {
+            return props[propName]
+        } else {
+            print("No such property " + propName + " in file " + filename)
+        }
+    } else {
+        print(filename + " does not exist!")
+    }
+}
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.example.foodrecipe"
+        minSdk 21
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+
+    buildTypes {
+        debug{
+            buildConfigField "String", "BASE_URL", "\"${getProperty("local.properties", "base_url")}\""
+            buildConfigField "String","X_RapidAPI_Host","\"${getProperty("local.properties", "X_RapidAPI_Host")}\""
+            buildConfigField "String","X_RapidAPI_Key","\"${getProperty("local.properties", "X_RapidAPI_Key")}\""
+            minifyEnabled false
+        }
+        release {
+            buildConfigField "String", "BASE_URL", "\"${getProperty("local.properties", "base_url")}\""
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        dataBinding true
+    }
+}
+
+dependencies {
+
+    //kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    implementation "androidx.core:core-ktx:$ktxCore"
+
+    //support
+    implementation "androidx.appcompat:appcompat:$appCompat"
+    implementation "com.google.android.material:material:$material"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
+    //navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
+
+    // ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    // LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    //DI koin
+    // Koin for Kotlin apps
+    implementation "org.koin:koin-core:$koin_version"
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+
+    //REST - APIService
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$interceptor"
+    implementation "com.squareup.retrofit2:converter-gson:$gson"
+
+    //Coroutines Libs
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    implementation 'me.alfredobejarano.retrofitadapters:livedata:0.0.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    //shared prefs
+    implementation "androidx.security:security-crypto:$sharedPref"
+    // dimens for dynamic layout building
+    implementation "com.intuit.sdp:sdp-android:$rootProject.ext.intuit_version"
+    implementation "com.intuit.ssp:ssp-android:$rootProject.ext.intuit_version"
+
+    // glide
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
+
+}

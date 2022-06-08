@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.foodrecipe.ui.recipelisting.RecipeViewModel" />
+
+        <variable
+            name="adapter"
+            type="com.example.foodrecipe.base.BaseAdapter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".RecipeListFragment">
+
+        <EditText
+            android:id="@+id/etQuery"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Enter what you want to search"
+            android:text="@={viewModel.query}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/submit"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()->viewModel.onSubmit()}"
+            android:text="submit"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:padding="5dp"
+            app:adapter="@{adapter}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etQuery"
+            app:payload="@{viewModel.getAllRecipeList()}"
+            app:recipeListPagination="@{viewModel}"
+            tools:listitem="@layout/recipe_list_row" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

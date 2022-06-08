@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">FoodRecipe</string>
+    <string name="please_confirm">Please Confirm</string>
+    <string name="okay">Okay</string>
+    <string name="no_internet_connectivity">No Internet Connect</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
